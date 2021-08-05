@@ -6,6 +6,9 @@ use Illuminate\Support\Facades\Storage;
 use Livewire\Component;
 use Livewire\TemporaryUploadedFile;
 use Livewire\WithFileUploads;
+use Illuminate\Support\Facades\Auth;
+use App\Models\Upload;
+use Illuminate\Support\Str;
 
 class EditorJS extends Component
 {
@@ -71,23 +74,34 @@ class EditorJS extends Component
 
     public function completedImageUpload(string $uploadedFileName, string $eventName, $fileName = null)
     {
-        /** @var TemporaryUploadedFile $tmpFile */
-        $tmpFile = collect($this->uploads)
-            ->filter(function (TemporaryUploadedFile $item) use ($uploadedFileName) {
-                return $item->getFilename() === $uploadedFileName;
-            })
-            ->first();
+        if (userIsCurrentTenant(Auth::user())) {
+            $uuid = (string) Str::uuid();
 
-        // When no file name is passed, we use the hashName of the tmp file
-        $storedFileName = $tmpFile->storeAs(
-            '/',
-            $fileName ?? $tmpFile->hashName(),
-            $this->uploadDisk
-        );
+            // Upload image
+            $file = collect($this->uploads)
+                ->filter(function (TemporaryUploadedFile $item) use ($uploadedFileName) {
+                    return $item->getFilename() === $uploadedFileName;
+                })
+                ->first();
+            $path = $file->storeAs(
+                'uploads',
+                $uuid . '.' . $file->extension(),
+                'local'
+            );
 
-        $this->dispatchBrowserEvent($eventName, [
-            'url' => Storage::disk($this->uploadDisk)->url($storedFileName),
-        ]);
+            // Create database entry
+            $upload = new Upload;
+
+            $upload->tenant_id = tenant('id');
+            $upload->name      = $uuid;
+            $upload->url       = $path;
+
+            $upload->save();
+
+            $this->dispatchBrowserEvent($eventName, [
+                'url' => config('app.url') . '/storage/tenant' . tenant('id') . '/' . $upload->url,
+            ]);
+        }
     }
 
     public function loadImageFromUrl(string $url)
@@ -102,7 +116,7 @@ class EditorJS extends Component
 
     public function save()
     {
-        $this->emitUp("editorjs-save:{$this->editorId}", $this->data);
+        $this->emit("editorjs-save:{$this->editorId}", $this->data);
     }
 
     public function render()
