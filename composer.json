@@ -29,12 +29,12 @@
     },
     "autoload": {
         "psr-4": {
-            "Mrpritchett\\LivewireEditorjs\\": "src"
+            "Maxeckel\\LivewireEditorjs\\": "src"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Mrpritchett\\LivewireEditorjs\\Tests\\": "tests"
+            "Maxeckel\\LivewireEditorjs\\Tests\\": "tests"
         }
     },
     "scripts": {
@@ -48,10 +48,10 @@
     "extra": {
         "laravel": {
             "providers": [
-                "Mrpritchett\\LivewireEditorjs\\LivewireEditorjsServiceProvider"
+                "Maxeckel\\LivewireEditorjs\\LivewireEditorjsServiceProvider"
             ],
             "aliases": {
-                "LivewireEditorjs": "Mrpritchett\\LivewireEditorjs\\LivewireEditorjsFacade"
+                "LivewireEditorjs": "Maxeckel\\LivewireEditorjs\\LivewireEditorjsFacade"
             }
         }
     }
