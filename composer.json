@@ -1,17 +1,19 @@
 {
-    "name": "maxeckel/livewire-editorjs",
+    "name": "mrpritchett/livewire-editorjs",
     "description": "This Package aims for an easy integration of Editor.JS with Laravel Livewire",
     "keywords": [
-        "maxeckel",
-        "livewire-editorjs"
+        "mrpritchett",
+        "livewire-editorjs",
+        "laravel-livewire",
+        "editorjs"
     ],
-    "homepage": "https://github.com/maxeckel/livewire-editorjs",
+    "homepage": "https://github.com/mrpritchett/livewire-editorjs",
     "license": "MIT",
     "type": "library",
     "authors": [
         {
-            "name": "Max Eckel",
-            "email": "contact@max-eckel.dev",
+            "name": "Matt Pritchett",
+            "email": "mattpritchett@hey.com",
             "role": "Developer"
         }
     ],
