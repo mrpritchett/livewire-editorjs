@@ -8,12 +8,16 @@ import InlineCode from '@editorjs/inline-code';
 import Quote from '@editorjs/quote';
 
 window.editorInstance = function(dataProperty, editorId, readOnly, placeholder, logLevel) {
+    console.log('data: ', this.$wire.get(dataProperty))
+
     return {
         instance: null,
         data: null,
 
         init() {
             this.data = this.$wire.get(dataProperty);
+
+            console.log('this.data: ', this.data)
 
             this.instance = new EditorJS({
                 holder: editorId,
@@ -88,6 +92,10 @@ window.editorInstance = function(dataProperty, editorId, readOnly, placeholder, 
                     }).catch((error) => {
                         console.log('Saving failed: ', error)
                     });
+                },
+
+                onReady: () => {
+                    this.instance.blocks.renderFromHTML(this.data)
                 }
             });
         }
